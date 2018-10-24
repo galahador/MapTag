@@ -22,14 +22,15 @@ class MapViewController: UIViewController {
     let locationManager = CLLocationManager()
     
     @IBOutlet weak var mapView: MKMapView!
-    
-    @IBAction func button3(_ sender: AnyObject) {
-        getDirections()
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        locationManagerSetup()
+        setupSearchBar()
+    }
+    
+    fileprivate func locationManagerSetup() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -37,23 +38,21 @@ class MapViewController: UIViewController {
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationPinTableViewController
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController.searchResultsUpdater = locationSearchTable
-        
+        locationSearchTable.mapView = mapView
+        locationSearchTable.handleMapSearchDelegate = self
+    }
+    
+    fileprivate func setupSearchBar() {
         let searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
         searchBar.placeholder = "Search for places"
         navigationItem.titleView = resultSearchController?.searchBar
-        
         resultSearchController.hidesNavigationBarDuringPresentation = false
         resultSearchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
-        
-        
-        locationSearchTable.mapView = mapView
-        locationSearchTable.handleMapSearchDelegate = self
-        
     }
     
-    @objc func getDirections(){
+    @objc func getDirections() {
         guard let selectedPin = selectedPin else { return }
         let mapItem = MKMapItem(placemark: selectedPin)
         let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
@@ -61,7 +60,7 @@ class MapViewController: UIViewController {
     }
 }
 
-extension MapViewController : CLLocationManagerDelegate {
+extension MapViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
@@ -84,10 +83,8 @@ extension MapViewController : CLLocationManagerDelegate {
 
 extension MapViewController: HandleMapSearch {
     
-    func dropPinZoomIn(_ placemark: MKPlacemark){
-        // cache the pin
+    func dropPinZoomIn(_ placemark: MKPlacemark) {
         selectedPin = placemark
-        // clear existing pins
         mapView.removeAnnotations(mapView.annotations)
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
@@ -106,9 +103,9 @@ extension MapViewController: HandleMapSearch {
     
 }
 
-extension MapViewController : MKMapViewDelegate {
+extension MapViewController: MKMapViewDelegate {
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         guard !(annotation is MKUserLocation) else { return nil }
         

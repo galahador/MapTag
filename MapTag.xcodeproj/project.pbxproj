@@ -80,11 +80,9 @@
 			isa = PBXGroup;
 			children = (
 				A5A988302180DA2400577AEC /* AppDelegate.swift */,
-				A5A988322180DA2400577AEC /* MapViewController.swift */,
-				A5A988502180DA6600577AEC /* LocationPinTableViewController.swift */,
-				A5A988342180DA2400577AEC /* Main.storyboard */,
+				A5A9885A2180E4B200577AEC /* View */,
+				A5A988592180E4A600577AEC /* Controller */,
 				A5A988372180DA2500577AEC /* Assets.xcassets */,
-				A5A988392180DA2500577AEC /* LaunchScreen.storyboard */,
 				A5A9883C2180DA2500577AEC /* Info.plist */,
 			);
 			path = MapTag;
@@ -97,6 +95,24 @@
 				A5A988472180DA2600577AEC /* Info.plist */,
 			);
 			path = MapTagUITests;
+			sourceTree = "<group>";
+		};
+		A5A988592180E4A600577AEC /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A5A988322180DA2400577AEC /* MapViewController.swift */,
+				A5A988502180DA6600577AEC /* LocationPinTableViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		A5A9885A2180E4B200577AEC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A5A988342180DA2400577AEC /* Main.storyboard */,
+				A5A988392180DA2500577AEC /* LaunchScreen.storyboard */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
